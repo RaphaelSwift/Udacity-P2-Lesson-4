@@ -13,6 +13,7 @@ class RockPaperScissorsViewController: UIViewController {
     @IBOutlet weak var rockButton: UIButton!
     @IBOutlet weak var paperButton: UIButton!
     @IBOutlet weak var scissorsButton: UIButton!
+
     
     var match: RPSMatch!
     var history = [RPSMatch]()
@@ -67,17 +68,26 @@ class RockPaperScissorsViewController: UIViewController {
         // 3rd Way: Segue Only, No code!
         // But don't forget to implement prepareForSegue.
     }
+    
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        //Notice that this code works for both Scissors and Paper
-        let controller = segue.destinationViewController as! ResultViewController
-        controller.match = self.match
+    @IBAction func showHistory() {
+        performSegueWithIdentifier("showHistory", sender: self)
     }
    
-    @IBAction func showHistory(sender: AnyObject) {
-      //TODO: Present HistoryViewController
-
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        // check to which destinationViewController it refers
+        
+        //Notice that this code works for both Scissors and Paper
+        if let controller = segue.destinationViewController as? ResultViewController {
+        controller.match = self.match
+        } else {
+            let controller = segue.destinationViewController as! HistoryViewController
+            //Pass information here to HistoryViewController
+            controller.history = self.history
+        }
     }
     
 }
